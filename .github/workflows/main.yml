@@ -3,31 +3,60 @@ name: GNU-IceCat
 
 # Controls when the workflow will run
 # Allows you to run this workflow manually from the Actions tab
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Job to run.'
+        required: true
+        default: ''
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "WindowsX64"
-  WindowsX64:
+  Make_IceCat:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Runs a single command using the runners shell
-      - name: Clone GNU IceCat.
+      - name: Clone GNU IceCat
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: git clone https://git.savannah.gnu.org/git/gnuzilla.git
         
-      - name: Make GNU IceCat.
+      - name: Make GNU IceCat
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           cd gnuzilla && \
           sed -i '/ding Firefox tarball$/{n;s/^[[:blank:]]\+wget/& --progress=bar:force:noscroll/;}' makeicecat
           ./makeicecat
+      - uses: actions/upload-artifact@v3
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        with:
+          name: IceOutput
+          path: gnuzilla/
+          
+  Build_Windows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow_conclusion: ""
+          name: IceOutput
+      #- name: Download a single artifact
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: IceOutput
 
       # Runs a set of commands using the runners shell
-      - name: Run Windows build script.
+      - name: Run Windows build script
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
-          cd output/icecat-*/
+          cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^apt-get/s/--force-yes//' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
