@@ -17,15 +17,20 @@ jobs:
       # Runs a single command using the runners shell
       - name: Clone GNU IceCat.
         run: git clone https://git.savannah.gnu.org/git/gnuzilla.git
+        
+      - name: Make GNU IceCat.
+        run: |
+          cd gnuzilla && ./makeicecat
+          ls -l
 
       # Runs a set of commands using the runners shell
-      - name: Run Windows build script.
-        run: |
-          set -e
-          export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-          sudo apt-get -q -y install zip unzip yasm
-          mkdir obj-windows && cd obj-windows && \
-          cp ../gnuzilla/data/buildscripts/mozconfig-common .mozconfig && \
-          cat ../gnuzilla/data/buildscripts/mozconfig-windows >> .mozconfig && \
-          ./mach build && \
-          ./mach package
+      #- name: Run Windows build script.
+      #  run: |
+      #    set -e
+      #    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      #    sudo apt-get -q -y install zip unzip yasm
+      #    mkdir obj-windows && cd obj-windows && \
+      #    cp ../gnuzilla/data/buildscripts/mozconfig-common .mozconfig && \
+      #    cat ../gnuzilla/data/buildscripts/mozconfig-windows >> .mozconfig && \
+      #    ./mach build && \
+      #    ./mach package
