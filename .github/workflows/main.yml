@@ -68,6 +68,8 @@ jobs:
         run: |
           tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
-          sed -i -e 's/^apt-get/sudo apt-get/' -e '/^apt-get/s/--force-yes//' ../../data/buildscripts/build-windows.sh && \
+          sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
+          uname -a
+          ./mach bootstrap
           ../../data/buildscripts/build-windows.sh
