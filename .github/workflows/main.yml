@@ -21,6 +21,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run Windows build script.
         run: |
+          sed -i 's/^apt-get/sudo apt-get/' gnuzilla/data/buildscripts/build-windows.sh && \
           chmod u+x gnuzilla/data/buildscripts/build-windows.sh && \
           gnuzilla/data/buildscripts/build-windows.sh
           
