@@ -31,15 +31,20 @@ jobs:
           cd gnuzilla && \
           sed -i '/ding Firefox tarball$/{n;s/^[[:blank:]]\+wget/& --progress=bar:force:noscroll/;}' makeicecat
           ./makeicecat
+          
       - uses: actions/upload-artifact@v3
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: IceOutput
-          path: gnuzilla/
+          path: gnuzilla/output/icecat-*.tar.bz2
           
   Build_Windows:
     runs-on: ubuntu-latest
     steps:
+      - name: Clone GNU IceCat
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        run: git clone https://git.savannah.gnu.org/git/gnuzilla.git
+        
       - name: Download artifact
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-artifact
@@ -47,6 +52,8 @@ jobs:
         with:
           workflow_conclusion: ""
           name: IceOutput
+          path: gnuzilla/output/
+          
       #- name: Download a single artifact
       #  uses: actions/download-artifact@v3
       #  with:
@@ -56,6 +63,7 @@ jobs:
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
+          tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^apt-get/s/--force-yes//' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
