@@ -27,6 +27,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run Windows build script.
         run: |
+          cd output/icecat-*/
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^apt-get/s/--force-yes//' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
