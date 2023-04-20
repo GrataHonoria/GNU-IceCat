@@ -53,6 +53,9 @@ jobs:
           workflow_conclusion: ""
           name: IceOutput
           path: gnuzilla/output/
+          check_artifacts: true
+          search_artifacts: true
+          if_no_artifact_found: warn
           
       #- name: Download a single artifact
       #  uses: actions/download-artifact@v3
