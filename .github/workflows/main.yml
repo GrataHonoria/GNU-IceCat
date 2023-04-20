@@ -70,5 +70,5 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install mingw-w64 && \
+          sudo apt-get -y install libstdc++-12-dev-i386-cross && \
           ../../data/buildscripts/build-windows.sh
