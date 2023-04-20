@@ -72,3 +72,16 @@ jobs:
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install lib32stdc++-12-dev && \
           ../../data/buildscripts/build-windows.sh
+
+      - uses: actions/upload-artifact@v3
+        if: >-
+          ${{ 
+            (
+              (github.event.inputs.job == github.job) ||
+              (github.event.inputs.job == 'all')
+            ) &&
+            (success() || failure())
+          }}
+        with:
+          name: IceLog
+          path: gnuzilla/output/icecat-*/config.log
