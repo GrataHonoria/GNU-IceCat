@@ -20,8 +20,10 @@ jobs:
         
       - name: Make GNU IceCat.
         run: |
-          cd gnuzilla && ./makeicecat
-          ls -l
+          cd gnuzilla && \
+          sed -i '/ding Firefox tarball$/{n;s/^[[:blank:]]*wget/& --progress=bar:force:noscroll/;}' makeicecat
+          ./makeicecat
+          ls -l && ls -l output
 
       # Runs a set of commands using the runners shell
       #- name: Run Windows build script.
