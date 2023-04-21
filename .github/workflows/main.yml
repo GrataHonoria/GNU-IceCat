@@ -70,7 +70,9 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install mingw-w64-x86-64-dev
+          sudo apt-get -y install libboost1.74-dev libstdc++-12-dev gcc-snapshot \
+          g++-mingw-w64-i686-posix g++-mingw-w64-i686-win32 g++-mingw-w64-x86-64-posix \
+          g++-mingw-w64-x86-64-win32 libstdc++-12-dev-amd64-cross libc++-14-dev
           clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
