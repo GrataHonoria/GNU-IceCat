@@ -70,7 +70,10 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get install -y libc++-14-dev libstdc++-11-dev
+          clang -v
+          /usr/bin/clang++ -v
+          clang -target x86_64-w64-mingw32 -v
+          /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
           ../../data/buildscripts/build-windows.sh
 
