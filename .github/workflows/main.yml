@@ -70,7 +70,7 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install lib32stdc++-12-dev && \
+          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' .mozconfig && \
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
@@ -83,5 +83,5 @@ jobs:
             (success() || failure())
           }}
         with:
-          name: IceLog
+          name: IceConfigureLog
           path: gnuzilla/output/icecat-*/obj-windows/config.log
