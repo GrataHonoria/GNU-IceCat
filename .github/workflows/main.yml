@@ -70,11 +70,10 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install mingw-w64 mingw-w64-x86-64-dev
+          sudo apt-get -y install gcc-mingw-w64 g++-mingw-w64
           clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
-          ./mach configure -- --help
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
