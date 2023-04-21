@@ -84,4 +84,4 @@ jobs:
           }}
         with:
           name: IceLog
-          path: gnuzilla/output/icecat-*/config.log
+          path: gnuzilla/output/icecat-*/obj-windows/config.log
