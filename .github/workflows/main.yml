@@ -76,6 +76,7 @@ jobs:
           clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
+          echo 'export CXXFLAGS="$CXXFLAGS -stdlib=platform"' >> ../../data/buildscripts/mozconfig-windows
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
