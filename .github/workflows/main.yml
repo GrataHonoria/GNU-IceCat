@@ -79,6 +79,8 @@ jobs:
           export CXXFLAGS="-isystem /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++" && \
           echo -e '-isystem\n/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++' > /tmp/compile_flags.txt && \
           cat /tmp/compile_flags.txt
+          mkdir -p /usr/x86_64-w64-mingw32/include && \
+          ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
           clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -v -c -xc++ /dev/null
