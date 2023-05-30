@@ -70,11 +70,11 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools && \
+          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include && \
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
-          sudo ln -s /usr/bin/x86_64-w64-mingw32-widl /usr/bin/widl
+          ls -al /usr/bin/llvm* ; ls -al /usr/lib/llvm-14/bin/llvm*
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
