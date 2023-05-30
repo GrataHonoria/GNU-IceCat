@@ -70,20 +70,10 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install g++-mingw-w64-x86-64-posix && \
-          mkdir -p $HOME/.config/clangd && \
-          cat << EOF > $HOME/.config/clangd/config.yaml
-          CompileFlags:
-            Add: [-isystem /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++]  
-          EOF
-          export CXXFLAGS="-isystem /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++" && \
-          echo -e '-isystem\n/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++' > /tmp/compile_flags.txt && \
-          cat /tmp/compile_flags.txt
+          sudo apt-get -y install g++-mingw-w64-x86-64-posix lld-14 && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include && \
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
-          clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
-          clang -v -c -xc++ /dev/null
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
           export MOZ_CONFIGURE_TRACE=true
