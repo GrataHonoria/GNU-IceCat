@@ -63,23 +63,34 @@ jobs:
       #    name: IceOutput
 
       # Runs a set of commands using the runners shell
-      - name: Run Windows build script
+      - name: Prepare Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm && \
+          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include && \
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
-          sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
-          ls -al /usr/bin/llvm* ; ls -al /usr/lib/llvm-14/bin/llvm*
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
-          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
-          export MOZ_CONFIGURE_TRACE=true
+          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
+          
+      - name: Run fxc2 build.
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        run: |
+          pushd ${{github.workspace}}
+          git clone --depth 1 https://github.com/mozilla/fxc2.git
+          cd fxc2 && make x64 && \
+          echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
+          popd
+          
+      - name: Run Windows build script
+        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        run: |
+          export MOZ_CONFIGURE_TRACE=true && \
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
