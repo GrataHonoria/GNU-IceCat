@@ -70,9 +70,9 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          clang -target x86_64-w64-mingw32 -v
-          /usr/bin/clang++ -target x86_64-w64-mingw32 -v
-          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
+          clang -target x86_64-pc-windows-gnu -v
+          /usr/bin/clang++ -target x86_64-pc-windows-gnu -v
+          sed -i 's/i686-w64-mingw32/x86_64-pc-windows-gnu/' ../../data/buildscripts/mozconfig-windows && \
           export MOZ_CONFIGURE_TRACE=true
           ../../data/buildscripts/build-windows.sh
 
