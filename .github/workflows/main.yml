@@ -85,7 +85,7 @@ jobs:
           pushd ${{github.workspace}}
           git clone --depth 1 https://github.com/mozilla/fxc2.git
           cd fxc2 && git clone --depth 1 https://github.com/apitrace/dxsdk && \
-          clang++ -static -Idxsdk/Include fxc2.cpp -ofxc2.exe && \
+          clang++ -static -Idxsdk/Include -I/usr/x86_64-w64-mingw32/include fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           popd
           
