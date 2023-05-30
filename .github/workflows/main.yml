@@ -77,7 +77,7 @@ jobs:
             Add: [-isystem /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++]  
           EOF
           export CXXFLAGS="-isystem /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++" && \
-          echo '-isystem\n/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++' > /tmp/compile_flags.txt && \
+          echo -e '-isystem\n/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++' > /tmp/compile_flags.txt && \
           cat /tmp/compile_flags.txt
           clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
