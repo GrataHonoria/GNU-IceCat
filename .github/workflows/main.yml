@@ -77,19 +77,23 @@ jobs:
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
+          pwd
           
       - name: Run fxc2 build.
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
+          pwd
           pushd ${{github.workspace}}
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && make x64 && \
+          cd fxc2 && clang++ -static fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           popd
+          pwd
           
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
+          cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
           ../../data/buildscripts/build-windows.sh
 
