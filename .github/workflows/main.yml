@@ -73,8 +73,9 @@ jobs:
           sudo apt-get -y install g++-mingw-w64-x86-64-posix && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include && \
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
-          whereis ldd-link && echo $PATH
-          ls -al /usr/lib/llvm-14/bin/lld* ; ls -al /usr/bin/lld* 
+          export PATH="$PATH:/usr/lib/llvm-14/bin"
+          echo "/usr/lib/llvm-14/bin" >> $GITHUB_PATH && \
+          echo $PATH
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
