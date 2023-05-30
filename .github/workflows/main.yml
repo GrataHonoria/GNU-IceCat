@@ -70,9 +70,11 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install g++-mingw-w64-x86-64
+          sudo apt-get -y install g++-mingw-w64-x86-64-posix
           clang -target x86_64-w64-mingw32 -v
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
+          clang -v -c -xc++ /dev/null
+          clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows && \
           export MOZ_CONFIGURE_TRACE=true
           ../../data/buildscripts/build-windows.sh
