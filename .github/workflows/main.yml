@@ -73,22 +73,21 @@ jobs:
           sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include && \
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
+          sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
-          pwd
           
       - name: Run fxc2 build.
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
-          pwd
           pushd ${{github.workspace}}
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && clang++ -static fxc2.cpp -ofxc2.exe && \
+          cd fxc2 && git clone --depth 1 https://github.com/apitrace/dxsdk && \
+          clang++ -static -Idxsdk/Include fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           popd
-          pwd
           
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
