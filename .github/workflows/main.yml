@@ -70,7 +70,7 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 directx-headers-dev && \
+          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 mingw-w64-x86-64-dev && \
           sudo mkdir -vp /usr/include/x86_64-w64-mingw32/include/c++ && \
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/include/x86_64-w64-mingw32/include/c++ && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
@@ -83,9 +83,8 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && git clone --depth 1 https://github.com/apitrace/dxsdk && \
-          clang++ -target x86_64-w64-mingw32 -static -I/usr/include/directx \
-          -Idxsdk/Include -I/usr/include/wsl/stubs fxc2.cpp -ofxc2.exe && \
+          cd fxc2 && clang++ -target x86_64-w64-mingw32 -static \
+          -I/usr/x86_64-w64-mingw32/include fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           
       - name: Run Windows build script
