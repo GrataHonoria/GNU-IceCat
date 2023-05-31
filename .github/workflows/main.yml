@@ -82,12 +82,10 @@ jobs:
       - name: Run fxc2 build.
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
-          pushd ${{github.workspace}}
           git clone --depth 1 https://github.com/mozilla/fxc2.git
           cd fxc2 && git clone --depth 1 https://github.com/apitrace/dxsdk && \
-          clang++ -static -Idxsdk/Include -I/usr/x86_64-w64-mingw32/include fxc2.cpp -ofxc2.exe && \
+          clang++ -target x86_64-w64-mingw32 -static -Idxsdk/Include -I/usr/x86_64-w64-mingw32/include fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
-          popd
           
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
