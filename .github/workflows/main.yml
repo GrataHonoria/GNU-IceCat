@@ -72,7 +72,6 @@ jobs:
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 mingw-w64-x86-64-dev && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include/c++ && \
-          sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++ && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
@@ -84,6 +83,7 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
           cd fxc2 && clang++ -target x86_64-w64-mingw32 -static \
+          -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
           -I/usr/x86_64-w64-mingw32/include fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           
