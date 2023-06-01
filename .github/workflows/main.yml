@@ -84,6 +84,7 @@ jobs:
           git clone --depth 1 https://github.com/mozilla/fxc2.git
           cd fxc2 && clang++ -target x86_64-w64-mingw32 -static \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
+          -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 \
           -I/usr/x86_64-w64-mingw32/include fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           
