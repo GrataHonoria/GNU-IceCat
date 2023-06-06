@@ -83,7 +83,7 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && clang++ -target x86_64-w64-mingw32 -static \
+          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 \
           -I/usr/x86_64-w64-mingw32/include -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 \
