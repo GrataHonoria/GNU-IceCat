@@ -86,8 +86,8 @@ jobs:
           cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 \
-          -I/usr/x86_64-w64-mingw32/include -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 \
-          -L/usr/x86_64-linux-gnu/lib/debug fxc2.cpp -ofxc2.exe && \
+          -I/usr/x86_64-w64-mingw32/include -L/usr/x86_64-linux-gnu/lib/debug \
+          -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           
       - name: Run Windows build script
