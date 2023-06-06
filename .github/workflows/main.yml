@@ -70,7 +70,8 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 mingw-w64-x86-64-dev && \
+          sudo apt-get -y install g++-mingw-w64-x86-64-posix mingw-w64-tools llvm wine64 \
+          mingw-w64-x86-64-dev libstdc++-12-dev-amd64-cross libgcc-12-dev-amd64-cross && \
           sudo mkdir -vp /usr/x86_64-w64-mingw32/include/c++ && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           rustup target add x86_64-pc-windows-gnu
@@ -82,6 +83,7 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
+          export LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/gcc-cross/x86_64-linux-gnu/12
           cd fxc2 && clang++ -target x86_64-w64-mingw32 -static \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
           -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 \
