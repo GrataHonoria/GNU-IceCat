@@ -71,8 +71,8 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install mingw-w64-tools llvm wine64 \
-          mingw-w64-x86-64-dev libgcc-12-dev-amd64-cross \
-          libstdc++-12-dev-amd64-cross libc++-14-dev && \
+          mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix \
+          libgcc-12-dev-amd64-cross && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
@@ -83,7 +83,7 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -I/usr/lib/llvm-14/include/c++/v1 -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 -L/usr/x86_64-w64-mingw32/lib fxc2.cpp -ofxc2.exe && \
+          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
           
       - name: Run Windows build script
