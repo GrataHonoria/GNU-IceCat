@@ -90,6 +90,8 @@ jobs:
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
+          ls -al /home/runner/work/GNU-IceCat/GNU-IceCat/fxc2
+          echo $PATH
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
           ../../data/buildscripts/build-windows.sh
