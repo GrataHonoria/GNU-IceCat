@@ -89,7 +89,7 @@ jobs:
           cp -v fxc2.exe $HOME/workspace/fxc2/bin/
           cp -v dll/d3dcompiler_47_32.dll $HOME/workspace/fxc2/bin/d3dcompiler_47.dll
           echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
-          echo "${{github.workspace}}/workspace/fxc2/bin" >> $GITHUB_PATH
+          echo "$HOME/workspace/fxc2/bin" >> $GITHUB_PATH
                     
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
