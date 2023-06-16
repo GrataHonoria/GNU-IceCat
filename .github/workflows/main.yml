@@ -70,7 +70,7 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
+          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt binfmt-support \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
