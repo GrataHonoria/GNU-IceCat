@@ -90,8 +90,11 @@ jobs:
                               
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        env:
+          LIBRARY_PATH: /usr/lib/gcc-cross/x86_64-linux-gnu/12
         run: |
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
+          echo $LIBRARY_PATH
           export MOZ_CONFIGURE_TRACE=true && \
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
