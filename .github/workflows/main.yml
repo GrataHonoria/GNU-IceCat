@@ -91,7 +91,7 @@ jobs:
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         env:
-          LIBRARY_PATH: /usr/lib/gcc-cross/x86_64-linux-gnu/12
+          LIBRARY_PATH: /usr/lib/gcc-cross/x86_64-linux-gnu/12:/usr/x86_64-w64-mingw32/lib
         run: |
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           echo $LIBRARY_PATH
