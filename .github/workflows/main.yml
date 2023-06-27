@@ -85,22 +85,15 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
           cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
-          mkdir -p $HOME/workspace/fxc2/bin
-          cp -v fxc2.exe $HOME/workspace/fxc2/bin/
-          cp -v dll/d3dcompiler_47_32.dll $HOME/workspace/fxc2/bin/d3dcompiler_47.dll
-          echo "${{github.workspace}}/fxc2" >> $GITHUB_PATH
-          echo "$HOME/workspace/fxc2/bin" >> $GITHUB_PATH
-                    
+          sudo cp -v fxc2.exe /usr/local/bin/
+          sudo cp -v dll/d3dcompiler_47_32.dll /usr/local/bin/d3dcompiler_47.dll
+                              
       - name: Run Windows build script
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
-        env:
-          WINDOWSSDKDIR: /home/runner/workspace/fxc2/bin
         run: |
-          ls -al /home/runner/work/GNU-IceCat/GNU-IceCat/fxc2
-          echo $PATH ; echo $WINDOWSSDKDIR
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
-          sed -i '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
+          sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
