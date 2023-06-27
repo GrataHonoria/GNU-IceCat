@@ -92,8 +92,11 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
-          export LIBRARY_PATH=/usr/lib/gcc-cross/x86_64-linux-gnu/12:$LIBRARY_PATH && \
+          export LIBRARY_PATH=/usr/lib/gcc-cross/x86_64-linux-gnu/12 && \
+          export PATH=/usr/x86_64-w64-mingw32/bin:$PATH
           echo $LIBRARY_PATH
+          echo $PATH
+          ls -al /usr/bin/l*
           export MOZ_CONFIGURE_TRACE=true && \
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
