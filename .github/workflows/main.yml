@@ -29,7 +29,7 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           cd gnuzilla && \
-          sed -i '/default-bookmarks.html/s/^/#/' makeicecat && \
+          sed -i -e '/brand.dtd/s/^/#/' -e '/brand.ftl/s/^/#/' makeicecat && \
           sed -i '/ding Firefox tarball$/{n;s/^[[:blank:]]\+wget/& --progress=bar:force:noscroll/;}' makeicecat
           ./makeicecat
           
