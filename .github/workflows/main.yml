@@ -29,6 +29,7 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           cd gnuzilla && \
+          git checkout 8c8a8ecc9322b0954e3d51f661866dbde1e6b1c3
           sed -i '/ding Firefox tarball$/{n;s/^[[:blank:]]\+wget/& --progress=bar:force:noscroll/;}' makeicecat
           ./makeicecat
           
