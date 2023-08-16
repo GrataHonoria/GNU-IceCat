@@ -98,7 +98,7 @@ jobs:
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/x86_64-w64-mingw32/bin/ld /usr/bin/ld && \
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
-          sed -i '/mach build/i.\/mach bootstrap help/' ../../data/buildscripts/build-windows.sh && \
+          sed '/mach build/i.\/mach bootstrap help/' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
