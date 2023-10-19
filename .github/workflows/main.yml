@@ -77,7 +77,7 @@ jobs:
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           rustup target add x86_64-pc-windows-gnu
-          /usr/bin/clang++ -target x86_64-w64-mingw32 -v
+          strace -f /usr/bin/clang++ -target x86_64-w64-mingw32 -v --config debug.cfg
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           
