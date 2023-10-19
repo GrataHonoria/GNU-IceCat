@@ -77,7 +77,7 @@ jobs:
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           rustup target add x86_64-pc-windows-gnu
-          strace -f /usr/bin/clang++ -target x86_64-w64-mingw32 -v --config debug.cfg
+          /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           
@@ -96,6 +96,7 @@ jobs:
           export LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/12:/usr/lib/gcc-cross/x86_64-linux-gnu/12 && \
           export MOZ_CONFIGURE_TRACE=true && \
           sudo sh -c 'echo "-L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -L/usr/x86_64-w64-mingw32/lib -L/usr/x86_64-w64-mingw32/lib -L/usr/x86_64-w64-mingw32/sys-root/mingw/lib -lmingw32 -lmsvcrt-os -lmsvcrt -lucrt -lgdi32 -X --subsystem console" > /usr/bin/clang.cfg'          
+          sudo sh -c 'echo "-L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -L/usr/x86_64-w64-mingw32/lib -L/usr/x86_64-w64-mingw32/lib -L/usr/x86_64-w64-mingw32/sys-root/mingw/lib -lmingw32 -lmsvcrt-os -lmsvcrt -lucrt -lgdi32 -X --subsystem console" > /usr/lib/llvm-14/bin/clang.cfg'
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
