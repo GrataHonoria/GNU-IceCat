@@ -4,6 +4,9 @@ name: GNU-IceCat
 # Controls when the workflow will run
 # Allows you to run this workflow manually from the Actions tab
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       job:
@@ -73,7 +76,7 @@ jobs:
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix \
-          libgcc-12-dev-amd64-cross nasm && \
+          libgcc-12-dev-amd64-cross nasm alsa-base && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           rustup target add x86_64-pc-windows-gnu
