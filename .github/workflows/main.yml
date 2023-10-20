@@ -79,7 +79,19 @@ jobs:
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
-          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
+          sed -i 's/i686-w64-mingw32/x86_64-pc-windows-gnu/' ../../data/buildscripts/mozconfig-windows
+          cat << EOF > ../../data/buildscripts/mozconfig-windows
+          ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
+          CXXFLAGS="-fms-extensions"
+          ac_add_options --disable-default-browser-agent
+          ac_add_options --disable-update-agent
+          ac_add_options --disable-geckodriver
+          ac_add_options --disable-webrtc
+          ac_add_options --enable-proxy-bypass-protection
+          ac_add_options --disable-notification-server
+          ac_add_options --disable-warnings-as-errors
+          mk_add_options "export WIDL_TIME_OVERRIDE=0" 
+          EOF
           
       - name: Run fxc2 build.
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -95,7 +107,7 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/12:/usr/lib/gcc-cross/x86_64-linux-gnu/12 && \
           export MOZ_CONFIGURE_TRACE=true && \
-          echo "-L/usr/x86_64-w64-mingw32/lib -lmsvcrt -lmsvcrt-os -lmingw32 -lucrtbase -lucrt -Wl,-m,unicode" > /home/runner/clang.cfg          
+          echo "-L/usr/x86_64-w64-mingw32/lib -lmsvcrt -lmsvcrt-os -lmingw32 -lucrtbase -lucrt" > /home/runner/clang.cfg          
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
