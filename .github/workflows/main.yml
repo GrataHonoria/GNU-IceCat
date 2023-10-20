@@ -9,7 +9,7 @@ on:
       job:
         description: 'Job to run.'
         required: true
-        default: ''
+        default: 'Build_Windows'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -87,7 +87,6 @@ jobs:
           ac_add_options --disable-geckodriver
           ac_add_options --disable-webrtc
           ac_add_options --enable-proxy-bypass-protection
-          ac_add_options --disable-notification-server
           ac_add_options --disable-warnings-as-errors
           mk_add_options "export WIDL_TIME_OVERRIDE=0" 
           EOF
