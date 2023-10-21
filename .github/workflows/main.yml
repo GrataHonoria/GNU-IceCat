@@ -75,7 +75,7 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
-          mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix \
+          mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libasound2-dev libpulse-dev libpango1.0-dev && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
@@ -109,7 +109,7 @@ jobs:
           export LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/12:/usr/lib/gcc-cross/x86_64-linux-gnu/12 && \
           export MOZ_CONFIGURE_TRACE=true && \
           export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
-          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 -lmingw32 -lgcc" > /home/runner/clang.cfg          
+          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -lmingw32 -lgcc" > /home/runner/clang.cfg          
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
