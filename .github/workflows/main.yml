@@ -82,7 +82,7 @@ jobs:
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
-          sed -i 's/i686-w64-mingw32/x86_64-pc-windows-gnu/' ../../data/buildscripts/mozconfig-windows
+          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
