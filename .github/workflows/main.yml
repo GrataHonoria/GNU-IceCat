@@ -51,7 +51,7 @@ jobs:
         run: git clone https://git.savannah.gnu.org/git/gnuzilla.git
         
       - name: Download artifact
-        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-artifact
         uses: dawidd6/action-download-artifact@v2
         with:
