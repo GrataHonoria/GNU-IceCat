@@ -110,8 +110,8 @@ jobs:
           echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -lmingw32 -lgcc -Wl,-m,windows -mwindows" > /home/runner/clang.cfg          
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
-          sed -i '/mach build/isudo mv -v \/usr\/bin\/ld \/usr\/bin\/ld.bak/' ../../data/buildscripts/build-windows.sh && \
-          sed -i '/mach build/isudo ln -vs \/usr\/bin\/x86_64-w64-mingw32-ld \/usr\/bin\/ld/' ../../data/buildscripts/build-windows.sh && \
+          sed -i '/mach build/isudo mv -v \/usr\/bin\/ld \/usr\/bin\/ld.bak /' ../../data/buildscripts/build-windows.sh && \
+          sed -i '/mach build/isudo ln -vs \/usr\/bin\/x86_64-w64-mingw32-ld \/usr\/bin\/ld /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
 
       - uses: actions/upload-artifact@v3
