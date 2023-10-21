@@ -109,7 +109,7 @@ jobs:
           export LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/12:/usr/lib/gcc-cross/x86_64-linux-gnu/12 && \
           export MOZ_CONFIGURE_TRACE=true && \
           export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
-          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -lmingw32 -lgcc" > /home/runner/clang.cfg          
+          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -lmingw32 -lgcc -lcrtdll -lmsvcrt-os -lmsvcrt -lucrtbase -lucrt -lucrtapp -lntdllcrt -lrpcrt4" > /home/runner/clang.cfg          
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
