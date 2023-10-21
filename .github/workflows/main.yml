@@ -76,14 +76,14 @@ jobs:
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix \
-          libgcc-12-dev-amd64-cross nasm libasound2-dev libpulse-dev && \
+          libgcc-12-dev-amd64-cross nasm libasound2-dev libpulse-dev libpango1.0-dev && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-pc-windows-gnu/' ../../data/buildscripts/mozconfig-windows
-          cat << EOF > ../../data/buildscripts/mozconfig-windows
+          cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
           ac_add_options --disable-default-browser-agent
