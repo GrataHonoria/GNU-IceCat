@@ -108,7 +108,7 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
           echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix" > /home/runner/clang.cfg && \
-          find /usr/x86_64-w64-mingw32/lib -name "*.a" -type f -printf "-l%f\n" | cut -c1-2,6- | sed 's/.a//' >> /home/runner/clang.cfg
+          find /usr/x86_64-w64-mingw32/lib -name "*.a" -type f -printf "-l%f\n" | sed -e 's/^-llib/-l/g' -e 's/.a//' >> /home/runner/clang.cfg
           tail /home/runner/clang.cfg
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
