@@ -108,7 +108,7 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix"
-          export MIDL_FLAGS="-I/usr/include/wine-development/wine/windows"
+          export MIDL_FLAGS="-I /usr/include/wine-development/wine/windows"
           echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -mwindows -v" > /home/runner/clang.cfg && \
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
