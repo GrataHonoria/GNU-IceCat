@@ -36,7 +36,7 @@ jobs:
           sed -i '/ding Firefox tarball$/{n;s/^[[:blank:]]\+wget/& --progress=bar:force:noscroll/;}' makeicecat
           ./makeicecat
           
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: IceOutput
@@ -53,16 +53,17 @@ jobs:
       - name: Download artifact
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           workflow_conclusion: ""
           name: IceOutput
           path: gnuzilla/output/
           search_artifacts: true
+          check_artifacts: true
           if_no_artifact_found: warn
           
       #- name: Download a single artifact
-      #  uses: actions/download-artifact@v3
+      #  uses: actions/download-artifact@v4
       #  with:
       #    name: IceOutput
 
@@ -117,13 +118,13 @@ jobs:
           cp /usr/include/wine-development/wine/windows/*.* other-licenses/ia2       
           Xvfb :1 -screen 0 1024x768x8 &
           wineboot -i && \
-          ls -al /home/runner/.wine./dosdevices/z: ; \
+          ls -al /home/runner/.wine/dosdevices/z: ; \
           ls -al /usr/local/bin/ && \
           /usr/bin/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: >-
           ${{ 
             (
