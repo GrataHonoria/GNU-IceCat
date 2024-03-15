@@ -77,7 +77,7 @@ jobs:
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
-          libgcc-12-dev-amd64-cross nasm libwine-development-dev xvfb && \
+          libgcc-12-dev-amd64-cross nasm libwine-development-dev xvfb wine32-development && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           rustup target add x86_64-pc-windows-gnu
@@ -118,8 +118,6 @@ jobs:
           cp /usr/include/wine-development/wine/windows/*.* other-licenses/ia2       
           Xvfb :1 -screen 0 1024x768x8 &
           wineboot -i && \
-          ls -al /home/runner/.wine/dosdevices/z: ; \
-          ls -al /usr/local/bin/ && \
           /usr/bin/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
