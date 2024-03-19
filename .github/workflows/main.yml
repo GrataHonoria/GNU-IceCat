@@ -118,7 +118,7 @@ jobs:
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
-          sed -i '22d' browser/branding/branding-common.mozbuild
+          sed -i '21d' browser/branding/branding-common.mozbuild
           cp /usr/include/wine-development/wine/windows/*.* other-licenses/ia2       
           Xvfb :1 -screen 0 1024x768x8 &
           wineboot -i && \
