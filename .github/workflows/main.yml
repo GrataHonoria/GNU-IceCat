@@ -102,7 +102,8 @@ jobs:
           git clone --depth 1 https://github.com/mozilla/fxc2.git
           cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
           sudo cp -v fxc2.exe /usr/local/bin/
-          sudo cp -v dll/d3dcompiler_47_32.dll /usr/local/bin/d3dcompiler_47.dll
+          sudo cp -v dll/d3dcompiler_47.dll /usr/local/bin/d3dcompiler_47.dll
+          sudo cp -v dll/d3dcompiler_47_32.dll /usr/local/bin/d3dcompiler_47_32.dll
                               
       - name: Run Windows build script
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -111,7 +112,7 @@ jobs:
           export MOZ_CONFIGURE_TRACE=true && \
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix"
           export DISPLAY=:1
-          export WINEDLLOVERRIDES="z:\\usr\\local\\bin\\d3dcompiler_47=b;\\usr\\local\\bin\\d3dcompiler_47=n"
+          export WINEDLLPATH=/usr/local/bin/
           echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -mwindows -v" > /home/runner/clang.cfg && \
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
