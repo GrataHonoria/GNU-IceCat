@@ -85,6 +85,7 @@ jobs:
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
+          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows   
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
@@ -117,6 +118,7 @@ jobs:
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
+          sed -i '22d' browser/branding/branding-common.mozbuild
           cp /usr/include/wine-development/wine/windows/*.* other-licenses/ia2       
           Xvfb :1 -screen 0 1024x768x8 &
           wineboot -i && \
