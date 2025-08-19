@@ -78,7 +78,7 @@ jobs:
           sudo dpkg --add-architecture i386 && sudo apt-get update && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
-          libgcc-12-dev-amd64-cross nasm libwine wine64 wine32:i386 && \
+          libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           rustup target add x86_64-pc-windows-gnu
@@ -118,8 +118,9 @@ jobs:
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
           sed -i '21d;24d;25d' browser/branding/branding-common.mozbuild
-          #cp /usr/include/wine-development/wine/windows/*.* other-licenses/ia2
-          #cp /usr/include/wine-development/wine/windows/*.* accessible/interfaces/msaa
+          xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
+          #cp /usr/include/wine/wine/windows/*.* other-licenses/ia2
+          #cp /usr/include/wine/wine/windows/*.* accessible/interfaces/msaa
           Xvfb :1 -screen 0 1024x768x8 &
           wineboot -i && \
           /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_
