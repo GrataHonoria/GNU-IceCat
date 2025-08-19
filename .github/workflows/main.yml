@@ -75,9 +75,10 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           chmod u+x ../../data/buildscripts/build-windows.sh && \
+          sudo apt-get update && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
-          libgcc-12-dev-amd64-cross nasm libwine xvfb && \
+          libgcc-12-dev-amd64-cross nasm libwine && \
           sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32-development
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
