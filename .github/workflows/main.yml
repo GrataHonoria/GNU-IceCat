@@ -121,7 +121,7 @@ jobs:
           xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
           #cp /usr/include/wine/wine/windows/*.* other-licenses/ia2
           #cp /usr/include/wine/wine/windows/*.* accessible/interfaces/msaa
-          xvfb :0 -screen 0 1024x768x24 &
+          Xvfb :0 -screen 0 1024x768x24 &
           wineboot -i && \
           #xvfb-run --server-args="-screen 0 1024x768x24" wine notepad.exe
           DISPLAY=:0.0 wine notepad.exe
