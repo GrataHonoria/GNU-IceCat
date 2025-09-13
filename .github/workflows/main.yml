@@ -24,9 +24,40 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Runs a single command using the runners shell
-      - name: Clone GNU IceCat
+      - name: Download IceCatClone artifact
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
-        run: git clone https://git.savannah.gnu.org/git/gnuzilla.git
+        id: download-IceCatClone-artifact
+        uses: dawidd6/action-download-artifact@v11
+        with:
+          workflow_conclusion: ""
+          name: IceCatClone
+          search_artifacts: true
+          check_artifacts: true
+          if_no_artifact_found: ignore
+          
+      - name: Clone GNU IceCat
+        if: >-
+          ${{
+            (
+              (github.event.inputs.job == github.job) ||
+              (github.event.inputs.job == 'all')
+            ) &&
+            (steps.download-IceCatClone-artifact.outcome == 'skipped')
+          }}
+        run: git clone --depth 1 https://git.savannah.gnu.org/git/gnuzilla.git
+
+      - uses: actions/upload-artifact@v4
+        if: >-
+          ${{
+            (
+              (github.event.inputs.job == github.job) ||
+              (github.event.inputs.job == 'all')
+            ) &&
+            (steps.download-IceCatClone-artifact.outcome == 'skipped')
+          }}
+        with:
+          name: IceCatClone
+          path: gnuzilla
         
       - name: Make GNU IceCat
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -46,10 +77,48 @@ jobs:
     runs-on: ubuntu-latest
     needs: Make_IceCat
     steps:
-      - name: Clone GNU IceCat
+      - name: Download IceCatClone artifact
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
-        run: git clone https://git.savannah.gnu.org/git/gnuzilla.git
-        
+        id: download-IceCatClone-artifact
+        uses: dawidd6/action-download-artifact@v11
+        with:
+          workflow_conclusion: ""
+          name: IceCatClone
+          search_artifacts: true
+          check_artifacts: true
+          if_no_artifact_found: ignore
+          
+      - name: Clone GNU IceCat
+        id: Clone-IceCat
+        if: >-
+          ${{
+            (
+              (github.event_name == 'push') ||
+              (github.event.inputs.job == github.job) ||
+              (github.event.inputs.job == 'all')
+            ) &&
+            (steps.download-IceCatClone-artifact.outcome == 'skipped')
+          }}
+        run: git clone --depth 1 https://git.savannah.gnu.org/git/gnuzilla.git
+
+      - name: Git pull IceCat
+        if: >-
+          ${{
+            (
+              (github.event_name == 'push') ||
+              (github.event.inputs.job == github.job) ||
+              (github.event.inputs.job == 'all')
+            ) &&
+            (steps.Clone-IceCat.outcome == 'skipped')
+          }}
+        run: cd gnuzilla && git pull --depth=1 -fp --no-tags https://git.savannah.gnu.org/git/gnuzilla.git
+      
+      - uses: actions/upload-artifact@v4
+        if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        with:
+          name: IceCatClone
+          path: gnuzilla
+
       - name: Download artifact
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-artifact
@@ -114,7 +183,9 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
+          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
+          -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix \
+          -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
           sudo cp -v fxc2.exe /usr/local/bin/
           sudo cp -v dll/d3dcompiler_47.dll /usr/local/bin/d3dcompiler_47.dll
           sudo cp -v dll/d3dcompiler_47_32.dll /usr/local/bin/d3dcompiler_47_32.dll
@@ -136,7 +207,8 @@ jobs:
           wineboot -i && \
           X -config $HOME/dummy.conf &>$HOME/xorg.log &
           wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
-          /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ && \
+          /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS \
+          -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ && \
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
           #xvfb-run --server-args="-screen 0 1024x768x24" wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
@@ -158,6 +230,6 @@ jobs:
         with:
           name: IceConfigureLog
           path: |
-            gnuzilla/output/icecat-*/obj-windows/config.log
-            xorg.log
+            /home/runner/gnuzilla/output/icecat-*/obj-windows/config.log
+            /home/runner/xorg.log
             /var/log/Xorg.0.log
