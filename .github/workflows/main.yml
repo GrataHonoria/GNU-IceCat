@@ -1,8 +1,4 @@
-# This is a basic workflow to help you get started with Actions
 name: GNU-IceCat
-
-# Controls when the workflow will run
-# Allows you to run this workflow manually from the Actions tab
 on:
   push:
     branches:
@@ -14,16 +10,10 @@ on:
         required: true
         default: 'Build_Windows'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "WindowsX64"
   Make_IceCat:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
       - name: Download IceCatClone artifact
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-IceCatClone-artifact
@@ -57,7 +47,9 @@ jobs:
           }}
         with:
           name: IceCatClone
-          path: gnuzilla
+          path: |
+            dummy.txt
+            gnuzilla
         
       - name: Make GNU IceCat
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -117,7 +109,9 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: IceCatClone
-          path: gnuzilla
+          path: |
+            dummy.txt
+            gnuzilla
 
       - name: Download artifact
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -131,39 +125,21 @@ jobs:
           check_artifacts: true
           if_no_artifact_found: warn
           
-      #- name: Download a single artifact
-      #  uses: actions/download-artifact@v4
-      #  with:
-      #    name: IceOutput
-
-      # Runs a set of commands using the runners shell
-      - name: Prepare Windows build script
+      - name: Prepare Windows build environment
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
-          tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
-          cd $(ls -d gnuzilla/output/icecat-*|head -1)
-          sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
-          chmod u+x ../../data/buildscripts/build-windows.sh && \
           sudo dpkg --add-architecture i386 && sudo apt-get update && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
           sudo ln -s /usr/bin/lld-link-14 /usr/bin/lld-link
           sudo ln -s /usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
+          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -mwindows -v" > /home/runner/clang.cfg && \
+          sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
+          sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
-          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows 
-          cat << EOF >> ../../data/buildscripts/mozconfig-windows
-          ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
-          CXXFLAGS="-fms-extensions"
-          ac_add_options --disable-default-browser-agent
-          ac_add_options --disable-geckodriver
-          ac_add_options --disable-webrtc
-          ac_add_options --enable-proxy-bypass-protection
-          ac_add_options --disable-warnings-as-errors
-          mk_add_options "export WIDL_TIME_OVERRIDE=0" 
-          EOF
           cat << EOF >> $HOME/dummy.conf
           Section "Device"
             Identifier "Card0"
@@ -177,6 +153,28 @@ jobs:
             Device "Card0"
             Monitor "Monitor0"
           EndSection
+          EOF
+        
+      - name: Prepare Windows build script
+        if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        run: |
+          tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
+          cd $(ls -d gnuzilla/output/icecat-*|head -1)
+          chmod u+x ../../data/buildscripts/build-windows.sh && \
+          xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
+          sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
+          sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
+          sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
+          sed -i '21d;24d;25d' browser/branding/branding-common.mozbuild
+          cat << EOF >> ../../data/buildscripts/mozconfig-windows
+          ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
+          CXXFLAGS="-fms-extensions"
+          ac_add_options --disable-default-browser-agent
+          ac_add_options --disable-geckodriver
+          ac_add_options --disable-webrtc
+          ac_add_options --enable-proxy-bypass-protection
+          ac_add_options --disable-warnings-as-errors
+          mk_add_options "export WIDL_TIME_OVERRIDE=0" 
           EOF
           
       - name: Run fxc2 build.
@@ -198,12 +196,6 @@ jobs:
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix"
           export DISPLAY=:1
           export WINEDLLPATH=/usr/local/bin/
-          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix -mwindows -v" > /home/runner/clang.cfg && \
-          sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
-          sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
-          sed -i '0,/$LDFLAGS/s//& --config \/home\/runner\/clang.cfg/' build/autoconf/acgeneral.m4
-          sed -i '21d;24d;25d' browser/branding/branding-common.mozbuild
-          xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
           wineboot -i && \
           X -config $HOME/dummy.conf &>$HOME/xorg.log &
           DISPLAY=:0 wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
