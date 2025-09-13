@@ -194,12 +194,12 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix"
-          export DISPLAY=:1
+          export DISPLAY=:0
           export WINEDLLPATH=/usr/local/bin/
           wineboot -i && \
           X -config $HOME/dummy.conf &>$HOME/xorg.log &
-          DISPLAY=:0 wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
-          DISPLAY=:0 /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS \
+          wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
+          /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS \
           -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ && \
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           ../../data/buildscripts/build-windows.sh
