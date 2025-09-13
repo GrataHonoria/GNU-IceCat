@@ -199,7 +199,7 @@ jobs:
           export DISPLAY=:0
           export WINEDLLPATH=/usr/local/bin/
           wineboot -i && \
-          X -config $HOME/dummy.conf |tee $HOME/xorg.log ;
+          X -config $HOME/dummy.conf &>$HOME/xorg.log &
           pgrep -af dummy.conf
           wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
           /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS \
