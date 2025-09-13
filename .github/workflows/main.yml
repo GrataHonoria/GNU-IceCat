@@ -27,13 +27,13 @@ jobs:
       - name: Download IceCatClone artifact
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-IceCatClone-artifact
+        continue-on-error: true
         uses: dawidd6/action-download-artifact@v11
         with:
           workflow_conclusion: ""
           name: IceCatClone
           search_artifacts: true
           check_artifacts: true
-          if_no_artifact_found: ignore
           
       - name: Clone GNU IceCat
         if: >-
@@ -42,7 +42,7 @@ jobs:
               (github.event.inputs.job == github.job) ||
               (github.event.inputs.job == 'all')
             ) &&
-            (steps.download-IceCatClone-artifact.outcome == 'skipped')
+            (steps.download-IceCatClone-artifact.outcome == 'failure')
           }}
         run: git clone --depth 1 https://git.savannah.gnu.org/git/gnuzilla.git
 
@@ -53,7 +53,7 @@ jobs:
               (github.event.inputs.job == github.job) ||
               (github.event.inputs.job == 'all')
             ) &&
-            (steps.download-IceCatClone-artifact.outcome == 'skipped')
+            (steps.download-IceCatClone-artifact.outcome == 'failure')
           }}
         with:
           name: IceCatClone
@@ -80,13 +80,13 @@ jobs:
       - name: Download IceCatClone artifact
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-IceCatClone-artifact
+        continue-on-error: true
         uses: dawidd6/action-download-artifact@v11
         with:
           workflow_conclusion: ""
           name: IceCatClone
           search_artifacts: true
           check_artifacts: true
-          if_no_artifact_found: ignore
           
       - name: Clone GNU IceCat
         id: Clone-IceCat
@@ -97,7 +97,7 @@ jobs:
               (github.event.inputs.job == github.job) ||
               (github.event.inputs.job == 'all')
             ) &&
-            (steps.download-IceCatClone-artifact.outcome == 'skipped')
+            (steps.download-IceCatClone-artifact.outcome == 'failure')
           }}
         run: git clone --depth 1 https://git.savannah.gnu.org/git/gnuzilla.git
 
@@ -214,9 +214,7 @@ jobs:
           #xvfb-run --server-args="-screen 0 1024x768x24" wineconsole --backend=curses ping.exe -4 -a -n 8 gnu.com
           #cp /usr/include/wine/wine/windows/*.* other-licenses/ia2
           #cp /usr/include/wine/wine/windows/*.* accessible/interfaces/msaa
-          
-
-
+    
       - uses: actions/upload-artifact@v4
         if: >-
           ${{ 
@@ -230,6 +228,6 @@ jobs:
         with:
           name: IceConfigureLog
           path: |
-            /home/runner/gnuzilla/output/icecat-*/obj-windows/config.log
             /home/runner/xorg.log
             /var/log/Xorg.0.log
+            /home/runner/gnuzilla/output/icecat-*/obj-windows/config.log
