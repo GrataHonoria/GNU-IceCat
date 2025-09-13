@@ -47,6 +47,7 @@ jobs:
           }}
         with:
           name: IceCatClone
+          include-hidden-files: true
           path: |
             dummy.txt
             gnuzilla
@@ -109,6 +110,7 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: IceCatClone
+          include-hidden-files: true
           path: |
             dummy.txt
             gnuzilla
