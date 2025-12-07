@@ -115,10 +115,9 @@ jobs:
           cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++ \
           -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix \
           -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
-          mkdir -p /home/runner/.local/bin
-          cp -v fxc2.exe /home/runner/.local/bin/fxc2.exe
-          cp -v dll/d3dcompiler_47.dll /home/runner/.local/bin/d3dcompiler_47.dll
-          cp -v dll/d3dcompiler_47_32.dll /home/runner/.local/bin/d3dcompiler_47_32.dll
+          sudo cp -v fxc2.exe /usr/bin/fxc2.exe
+          sudo cp -v dll/d3dcompiler_47.dll /usr/bin/d3dcompiler_47.dll
+          sudo cp -v dll/d3dcompiler_47_32.dll /usr/bin/d3dcompiler_47_32.dll
                               
       - name: Run Windows build script
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -126,8 +125,8 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix"
-          export WINEDLLPATH=/home/runner/.local/bin
-          xvfb-run -a /usr/lib/wine/wine64 /home/runner/.local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
+          export WINEDLLPATH=/usr/bin
+          xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
           #cp /usr/include/wine/wine/windows/*.* other-licenses/ia2
