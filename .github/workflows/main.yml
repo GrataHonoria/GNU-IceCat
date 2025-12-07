@@ -49,7 +49,6 @@ jobs:
           path: gnuzilla/output/
           search_artifacts: true
           check_artifacts: true
-          if_no_artifact_found: warn
           
       - name: Prepare Windows build environment
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
