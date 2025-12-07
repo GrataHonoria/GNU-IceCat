@@ -75,7 +75,7 @@ jobs:
           ls -al /etc/apt/sources.list.d
           cat /etc/apt/sources.list.d/ubuntu.sources
           cat /etc/apt/sources.list.d/azure-cli.sources
-          cat /etc/apt/sources.list.d/icrosoft-prod.list
+          cat /etc/apt/sources.list.d/microsoft-prod.list
           
           ls -al /etc/cloud/
           ls -al /etc/cloud/templates
