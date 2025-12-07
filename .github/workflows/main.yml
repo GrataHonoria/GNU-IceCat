@@ -81,8 +81,8 @@ jobs:
           ls -al /etc/cloud/templates
           cat /etc/cloud/cloud.cfg
           cat /etc/cloud/templates/sources.list.ubuntu.deb822.tmpl
-          ls cat /etc/apt/
-          cat cat /etc/apt/apt-mirrors.txt
+          ls /etc/apt/
+          cat /etc/apt/apt-mirrors.txt
           exit 1
           sudo dpkg --add-architecture i386 && sudo apt-get update && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 cbindgen \
