@@ -115,6 +115,7 @@ jobs:
           -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix \
           -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
           ls -al
+          ls -al /home/runner
           cp -v fxc2.exe /home/runner/.local/bin/fxc2.exe
           cp -v dll/d3dcompiler_47.dll /home/runner/.local/bin/d3dcompiler_47.dll
           cp -v dll/d3dcompiler_47_32.dll /home/runner/.local/bin/d3dcompiler_47_32.dll
