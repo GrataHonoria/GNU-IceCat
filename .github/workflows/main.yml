@@ -25,7 +25,9 @@ jobs:
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: Gnuzilla
-          path: gnuzilla
+          path: |
+            gnuzilla
+            .bashrc
 
       - name: Make GNU IceCat
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -102,7 +104,6 @@ jobs:
         run: |
           tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
-          ls -a $HOME/
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
