@@ -124,9 +124,9 @@ jobs:
         run: |
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           export MOZ_CONFIGURE_TRACE=true && \
-          export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix"
-          export WINEDLLPATH=/usr/local/bin/
-          xvfb-run -a /usr/lib/wine/wine64 /usr/local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
+          export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix"
+          export WINEDLLPATH=/home/runner/.local/bin
+          xvfb-run -a /usr/lib/wine/wine64 /home/runner/.local/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
           #cp /usr/include/wine/wine/windows/*.* other-licenses/ia2
