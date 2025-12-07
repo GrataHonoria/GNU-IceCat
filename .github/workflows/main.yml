@@ -104,7 +104,7 @@ jobs:
             ) &&
             (steps.Clone-IceCat.outcome == 'skipped')
           }}
-        run: cd gnuzilla && git pull --depth=1 -fp --no-tags https://git.savannah.gnu.org/git/gnuzilla.git ; cd -
+        run: cd gnuzilla && git pull --depth=1 -f -p --no-tags https://git.savannah.gnu.org/git/gnuzilla.git ; cd -
       
       - uses: actions/upload-artifact@v4
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
