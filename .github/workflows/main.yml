@@ -76,7 +76,8 @@ jobs:
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
-          cargo install -f cbindgen@0.27.0
+          cargo install -f cbindgen@0.27.0 cargo-download
+          cargo download -x windows=0.58.0 -o$HOME/win-0.58.0
           sudo ln -vs /usr/bin/lld-link-18 /usr/bin/lld-link
           sudo ln -vs /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix -mwindows -v" > /home/runner/clang.cfg && \
@@ -126,6 +127,7 @@ jobs:
           export MOZ_CONFIGURE_TRACE=true && \
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix"
           export WINEDLLPATH=/usr/bin
+          export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
           xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
