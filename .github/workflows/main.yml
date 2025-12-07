@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Clone GNU IceCat
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
-        run: | 
+        run: |
           git clone -b $(git ls-remote -t --sort="v:refname" --refs https://git.savannah.gnu.org/git/gnuzilla.git|tail -1|cut -d"/" -f3) \
           --depth 1 https://git.savannah.gnu.org/git/gnuzilla.git
 
@@ -72,6 +72,8 @@ jobs:
       - name: Prepare Windows build environment
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
+          cat /etc/apt/sources.list
+          exit 1
           sudo dpkg --add-architecture i386 && sudo apt-get update && \
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 cbindgen \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
