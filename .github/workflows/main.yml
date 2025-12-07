@@ -111,15 +111,13 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           git clone --depth 1 https://github.com/mozilla/fxc2.git
-          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++ \
-          -I/usr/lib/gcc/x86_64-w64-mingw32/10-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix \
+          cd fxc2 && clang++ -v -target x86_64-w64-mingw32 -static -pthread -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++ \
+          -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32 -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix \
           -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc-cross/x86_64-linux-gnu/12 fxc2.cpp -ofxc2.exe && \
           ls -al
-          ls -al dll
-          echo $PATH
-          sudo cp -v fxc2.exe /usr/local/bin/fxc2.exe
-          sudo cp -v dll/d3dcompiler_47.dll /usr/local/bin/d3dcompiler_47.dll
-          sudo cp -v dll/d3dcompiler_47_32.dll /usr/local/bin/d3dcompiler_47_32.dll
+          cp -v fxc2.exe /home/runner/.local/bin/fxc2.exe
+          cp -v dll/d3dcompiler_47.dll /home/runner/.local/bin/d3dcompiler_47.dll
+          cp -v dll/d3dcompiler_47_32.dll /home/runner/.local/bin/d3dcompiler_47_32.dll
                               
       - name: Run Windows build script
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
