@@ -73,7 +73,7 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           sudo dpkg --add-architecture i386 && sudo apt-get update && \
-          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 \
+          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 cbindgen \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
           sudo ln -vs /usr/bin/lld-link-18 /usr/bin/lld-link
