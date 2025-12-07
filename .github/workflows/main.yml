@@ -141,7 +141,7 @@ jobs:
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/10-posix"
           #export DISPLAY=:99
           export WINEDLLPATH=/usr/local/bin/
-          export WINEARCH=win32
+          #export WINEARCH=win32
           #X -config $HOME/dummy.conf &>$HOME/xorg.log &
           #wineboot -i && \
           #winecfg -v
