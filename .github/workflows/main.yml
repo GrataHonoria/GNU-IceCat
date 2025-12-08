@@ -132,6 +132,8 @@ jobs:
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           cp -v /usr/lib/x86_64-linux-gnu/wine/x86_64-windows/*.tlb other-licenses/ia2
           cp -v /usr/lib/x86_64-linux-gnu/wine/x86_64-windows/*.tlb accessible/interfaces/ia2
+          ls -al other-licenses/ia2
+          ls -al accessible/interfaces/ia2
           ../../data/buildscripts/build-windows.sh
     
       - uses: actions/upload-artifact@v4
