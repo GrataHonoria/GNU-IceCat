@@ -97,7 +97,7 @@ jobs:
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
-          #sed -i '21d;24d;25d' browser/branding/branding-common.mozbuild
+          sed -i '22d' browser/branding/branding-common.mozbuild
           #sed -i '26 s/\n//' browser/branding/branding-common.mozbuild
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
