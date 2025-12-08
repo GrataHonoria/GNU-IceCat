@@ -130,8 +130,9 @@ jobs:
           export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
           xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
+          cp /usr/lib/x86_64-linux-gnu/wine/x86_64-windows/*.tlb other-licenses/ia2
           ../../data/buildscripts/build-windows.sh
-          #cp /usr/include/wine/wine/windows/*.* other-licenses/ia2
+          
           #cp /usr/include/wine/wine/windows/*.* accessible/interfaces/msaa
     
       - uses: actions/upload-artifact@v4
