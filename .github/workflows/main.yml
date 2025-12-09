@@ -98,7 +98,7 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
-          sed -i 's|stdole2.tlb|/usr/lib/x86_64-linux-gnu/wine/x86_64-windows/stdole2.tlb|' accessible/interfaces/ia2/IA2Typelib.idl
+          sed -i 's|stdole2.tlb|/usr/lib/x86_64-linux-gnu/wine/x86_64-windows/stdole2.tlb|' other-licenses/ia2/IA2TypeLibrary.idl
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
