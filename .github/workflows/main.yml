@@ -98,6 +98,7 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
+          sed -i 's|stdole2.tlb|/usr/lib/x86_64-linux-gnu/wine/x86_64-windows/stdole2.tlb|' accessible/interfaces/ia2/IA2Typelib.idl
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
@@ -130,10 +131,6 @@ jobs:
           export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
           xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
-          cp -v /usr/lib/x86_64-linux-gnu/wine/x86_64-windows/*.tlb other-licenses/ia2
-          cp -v /usr/lib/x86_64-linux-gnu/wine/x86_64-windows/*.tlb accessible/interfaces/ia2
-          ls -al other-licenses/ia2
-          ls -al accessible/interfaces/ia2
           ../../data/buildscripts/build-windows.sh
     
       - uses: actions/upload-artifact@v4
