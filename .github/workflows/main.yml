@@ -99,6 +99,7 @@ jobs:
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
           sed -i 's|, "-I"|, "-I", "/usr/lib/x86_64-linux-gnu/wine/x86_64-windows", "-I"|' accessible/interfaces/ia2/moz.build
+          sed -i 's|\["-I"|\["-I", "/usr/lib/x86_64-linux-gnu/wine/x86_64-windows", "-I"|' accessible/interfaces/msaa/moz.build 
           awk -i inplace '/-I",$/ {x=gsub(/ /," ",$0); printf($0"\n%"x"s\"/usr/lib/x86_64-linux-gnu/wine/x86_64-windows\",\n","")}1' accessible/interfaces/ia2/moz.build
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
