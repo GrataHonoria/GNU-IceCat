@@ -100,6 +100,7 @@ jobs:
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild 
           sed -i 's|command.append("-Oicf")|command.append("-I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf")|' build/midl.py
           sed -i 's|command = [midl]|command = ["strace -e %file",midl]|' build/midl.py
+          cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
           ac_add_options --disable-default-browser-agent
