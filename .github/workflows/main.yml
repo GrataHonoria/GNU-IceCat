@@ -73,7 +73,7 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           sudo dpkg --add-architecture i386 && sudo apt-get update && \
-          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 \
+          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 strace \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
           cargo install -f cbindgen@0.27.0 cargo-download
@@ -99,10 +99,7 @@ jobs:
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild 
           sed -i 's|command.append("-Oicf")|command.append("-I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf")|' build/midl.py
-          #sed -i 's|, "-I"|, "-I", "/usr/lib/x86_64-linux-gnu/wine/x86_64-windows", "-I"|' accessible/interfaces/ia2/moz.build
-          #sed -i 's|\["-I"|\["-I", "/usr/lib/x86_64-linux-gnu/wine/x86_64-windows", "-I"|' accessible/interfaces/msaa/moz.build 
-          #awk -i inplace '/-I",$/ {x=gsub(/ /," ",$0); printf($0"\n%"x"s\"/usr/lib/x86_64-linux-gnu/wine/x86_64-windows\",\n","")}1' accessible/interfaces/ia2/moz.build
-          cat << EOF >> ../../data/buildscripts/mozconfig-windows
+          sed -i 's|command = [midl]|command = ["strace -e %file",midl]|' build/midl.py
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
           ac_add_options --disable-default-browser-agent
