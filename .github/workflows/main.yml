@@ -134,7 +134,7 @@ jobs:
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           strace -o /home/runner/trace.log -e %file /usr/bin/x86_64-w64-mingw32-widl --win64 -m64 -app_config -I /home/runner/work/GNU-IceCat/GNU-IceCat/gnuzilla/output/icecat-140.8.0/other-licenses/ia2 \
           -I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf /home/runner/work/GNU-IceCat/GNU-IceCat/gnuzilla/output/icecat-140.8.0/accessible/interfaces/ia2/IA2Typelib.idl &&
-          ls -al /usr/local/lib/wine/x86_64-windows ; ls -al /usr/lib/wine/x86_64-windows ; ls -al /usr/lib/x86_64-windows 
+          ls -al /usr/local/lib/wine/x86_64-windows || true ; ls -al /usr/lib/wine/x86_64-windows || true ; ls -al /usr/lib/x86_64-windows 
           ../../data/buildscripts/build-windows.sh
     
       - uses: actions/upload-artifact@v4
