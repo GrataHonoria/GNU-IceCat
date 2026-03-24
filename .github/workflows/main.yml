@@ -83,6 +83,7 @@ jobs:
           echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix -mwindows -v" > /home/runner/clang.cfg && \
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
+          sudo mkdir -vp /usr/local/lib/wine && \
           sudo ln -vs /usr/lib/x86_64-linux-gnu/wine/x86_64-windows /usr/local/lib/wine/x86_64-windows
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
