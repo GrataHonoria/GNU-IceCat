@@ -99,7 +99,7 @@ jobs:
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild 
           sed -i 's|command.append("-Oicf")|command.append("-I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf")|' build/midl.py
-          sed -i 's|command = [midl]|command = ["strace -e %file",midl]|' build/midl.py
+          sed -i 's|command = [midl]|command = ["strace -o /home/runner/trace.log -e %file",midl]|' build/midl.py
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
@@ -132,6 +132,8 @@ jobs:
           export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
           xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
+          strace -e %file /usr/bin/x86_64-w64-mingw32-widl --win64 -m64 -app_config -I /home/runner/work/GNU-IceCat/GNU-IceCat/gnuzilla/output/icecat-140.4.0/other-licenses/ia2 \
+          -I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf /home/runner/work/GNU-IceCat/GNU-IceCat/gnuzilla/output/icecat-140.4.0/accessible/interfaces/ia2/IA2Typelib.idl &&
           ../../data/buildscripts/build-windows.sh
     
       - uses: actions/upload-artifact@v4
@@ -148,5 +150,6 @@ jobs:
           name: IceConfigureLog
           path: |
             /home/runner/xorg.log
+            /home/runner/trace.log
             /home/runner/.local/share/xorg/Xorg.0.log
             /home/runner/gnuzilla/output/icecat-*/obj-windows/config.log
