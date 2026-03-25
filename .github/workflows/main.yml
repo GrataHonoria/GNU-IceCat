@@ -80,7 +80,7 @@ jobs:
           cargo download -x windows=0.58.0 -o$HOME/win-0.58.0
           sudo ln -vs /usr/bin/lld-link-18 /usr/bin/lld-link
           sudo ln -vs /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
-          echo "-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix -mwindows -v" > /home/runner/clang.cfg && \
+          echo "-I/usr/include/wine/wine -L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix -mwindows -v" > /home/runner/clang.cfg && \
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sudo mkdir -vp /usr/local/lib/wine && \
@@ -95,13 +95,11 @@ jobs:
           tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           chmod u+x ../../data/buildscripts/build-windows.sh && \
-          xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
+          #xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
           sed '/mach build/s/^/strace -f -t -e trace=file /' ../../data/buildscripts/build-windows.sh && \
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
-          sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild 
-          sed -i 's|command.append("-Oicf")|command.append("-I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf")|' build/midl.py
-          sed -i 's|command = [midl]|command = ["strace -o /home/runner/trace.log -e %file",midl]|' build/midl.py
+          sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           CXXFLAGS="-fms-extensions"
@@ -134,8 +132,6 @@ jobs:
           export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
           xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
-          strace -o /home/runner/trace.log -e %file /usr/bin/x86_64-w64-mingw32-widl --win64 -m64 -app_config -I /home/runner/work/GNU-IceCat/GNU-IceCat/gnuzilla/output/icecat-140.8.0/other-licenses/ia2 \
-          -I /usr/lib/x86_64-linux-gnu/wine/x86_64-windows -Oicf /home/runner/work/GNU-IceCat/GNU-IceCat/gnuzilla/output/icecat-140.8.0/accessible/interfaces/ia2/IA2Typelib.idl &&
           ../../data/buildscripts/build-windows.sh
     
       - uses: actions/upload-artifact@v4
@@ -152,6 +148,5 @@ jobs:
           name: IceConfigureLog
           path: |
             /home/runner/xorg.log
-            /home/runner/trace.log
             /home/runner/.local/share/xorg/Xorg.0.log
             /home/runner/gnuzilla/output/icecat-*/obj-windows/config.log
