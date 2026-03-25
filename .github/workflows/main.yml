@@ -38,7 +38,7 @@ jobs:
           ./makeicecat
           
       - name: Upload GNU IceCat
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: IceOutput
@@ -51,7 +51,7 @@ jobs:
       - name: Download Gnuzilla
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-gnuzilla
-        uses: dawidd6/action-download-artifact@v11
+        uses: dawidd6/action-download-artifact@v19
         with:
           workflow_conclusion: ""
           name: Gnuzilla
@@ -61,7 +61,7 @@ jobs:
       - name: Download IceOutput
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         id: download-iceoutput
-        uses: dawidd6/action-download-artifact@v11
+        uses: dawidd6/action-download-artifact@v19
         with:
           workflow_conclusion: ""
           name: IceOutput
@@ -85,6 +85,7 @@ jobs:
           sudo mkdir -vp /usr/local/lib/wine && \
           sudo ln -vs /usr/lib/x86_64-linux-gnu/wine/x86_64-windows /usr/local/lib/wine/x86_64-windows
           cat << EOF >> /home/runner/clang.cfg
+          -std=c++11
           -I/usr/include/wine/wine
           -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++
           -L/usr/x86_64-w64-mingw32/lib
@@ -139,7 +140,7 @@ jobs:
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
     
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: >-
           ${{ 
             (
