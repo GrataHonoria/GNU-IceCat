@@ -94,7 +94,7 @@ jobs:
           -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix -mwindows -v
           EOF
           cat << EOF >> /home/runner/clang++.cfg
-          -I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++
+          #-I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++
           EOF
           rustup target add x86_64-pc-windows-gnu
           /usr/bin/clang++ -target x86_64-w64-mingw32 -v
