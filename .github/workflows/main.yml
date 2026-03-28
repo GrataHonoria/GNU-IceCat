@@ -83,7 +83,7 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           sudo ln -vs /usr/bin/lld-link-18 /usr/bin/lld-link
-          sudo ln -vs /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
+          #sudo ln -vs /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++ /usr/x86_64-w64-mingw32/include/c++
           sudo mv -v /usr/bin/ld /usr/bin/ld.bak && \
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sudo mkdir -vp /usr/local/lib/wine && \
