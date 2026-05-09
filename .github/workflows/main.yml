@@ -113,7 +113,7 @@ jobs:
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
-          CXXFLAGS="-fms-extensions"
+          export CXXFLAGS="$CXXFLAGS -fms-extensions -include type_traits -include cstdlib"
           ac_add_options --disable-default-browser-agent
           ac_add_options --disable-geckodriver
           ac_add_options --disable-webrtc
