@@ -70,6 +70,7 @@ jobs:
           check_artifacts: true
      
       - name: Configure Fast APT Mirror
+        if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         uses: vegardit/fast-apt-mirror.sh@v1
           
       - name: Update Windows build environment
@@ -118,7 +119,7 @@ jobs:
           #sed -i 's/-Wno-ignored-qualifiers/-include=type_traits -Wno-ignored-qualifiers/' mozglue/baseprofiler/moz.build
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
-          export CXXFLAGS="$CXXFLAGS -v -std=gnu++20 -fms-extensions -include type_traits -include cstdlib -include bits/memoryfwd"
+          export CXXFLAGS="$CXXFLAGS -v -std=gnu++20 -fms-extensions -include type_traits -include cstdlib -include /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/memoryfwd.h"
           ac_add_options --disable-default-browser-agent
           ac_add_options --disable-geckodriver
           ac_add_options --disable-webrtc
