@@ -88,6 +88,8 @@ jobs:
           sudo ln -vs /usr/bin/x86_64-linux-gnu-ld /usr/bin/ld && \
           sudo mkdir -vp /usr/local/lib/wine && \
           sudo ln -vs /usr/lib/x86_64-linux-gnu/wine/x86_64-windows /usr/local/lib/wine/x86_64-windows
+          sudo ln -vs /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32/bits/*.h \
+          /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/
           #cat << EOF >> /home/runner/clang.cfg
           #-I/usr/include/wine/wine
           #-L/usr/x86_64-w64-mingw32/lib
@@ -112,11 +114,7 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
-          #sed -i 's/-Wno-ignored-qualifiers/-include=type_traits -Wno-ignored-qualifiers/' mozglue/baseprofiler/moz.build
-          cat /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/stringfwd.h
-          cat /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/memoryfwd.h
-          cat /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32/bits/c++config.h
-          ac_add_options --disable-default-browser-agent
+          #sed -i 's/-Wno-ignored-qualifiers/-Wno-ignored-qualifiers -include=type_traits/' mozglue/baseprofiler/moz.build
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           export CXXFLAGS="$CXXFLAGS -v -std=gnu++20 -fms-extensions -include type_traits -include cstdlib -include /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32/bits/c++config.h -include /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/memoryfwd.h"
