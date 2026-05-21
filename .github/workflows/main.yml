@@ -113,6 +113,10 @@ jobs:
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
           #sed -i 's/-Wno-ignored-qualifiers/-include=type_traits -Wno-ignored-qualifiers/' mozglue/baseprofiler/moz.build
+          cat /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/stringfwd.h
+          cat /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/memoryfwd.h
+          cat /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32/bits/c++config.h
+          ac_add_options --disable-default-browser-agent
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           export CXXFLAGS="$CXXFLAGS -v -std=gnu++20 -fms-extensions -include type_traits -include cstdlib -include /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32/bits/c++config.h -include /usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/bits/memoryfwd.h"
