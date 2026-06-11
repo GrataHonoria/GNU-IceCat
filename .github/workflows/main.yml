@@ -115,13 +115,16 @@ jobs:
           #sed -i 's/-Wno-ignored-qualifiers/-Wno-ignored-qualifiers -include=type_traits/' mozglue/baseprofiler/moz.build
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
-          export CXXFLAGS="$CXXFLAGS -v -H -fms-extensions -include type_traits -include cstdlib"
+          #export CXXFLAGS="$CXXFLAGS -v -H -fms-extensions -include type_traits -include cstdlib"
           ac_add_options --disable-default-browser-agent
           ac_add_options --disable-geckodriver
           ac_add_options --disable-webrtc
           ac_add_options --enable-proxy-bypass-protection
           ac_add_options --disable-warnings-as-errors
-          mk_add_options "export WIDL_TIME_OVERRIDE=0" 
+          mk_add_options "export WIDL_TIME_OVERRIDE=0"
+          
+          if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
+              CXXFLAGS += [" -v -H -include cstdlib -include yourmum"]
           EOF
           
       - name: Run fxc2 build.
