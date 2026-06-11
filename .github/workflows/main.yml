@@ -123,7 +123,7 @@ jobs:
           ac_add_options --disable-warnings-as-errors
           mk_add_options "export WIDL_TIME_OVERRIDE=0"
           
-          if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
+          if RELATIVEDIR.startswith(("browser/app/winlauncher/freestanding/")):
               CXXFLAGS += [" -v -H -include cstdlib -include yourmum"]
           EOF
           
