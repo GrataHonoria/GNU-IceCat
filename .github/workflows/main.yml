@@ -122,13 +122,11 @@ jobs:
           ac_add_options --enable-proxy-bypass-protection
           ac_add_options --disable-warnings-as-errors
           mk_add_options "export WIDL_TIME_OVERRIDE=0"
-
-          
-          nonopt = (
-              "browser/app/winlauncher/freestanding/",
-          )
-          if RELATIVEDIR.startswith(nonopt):
-              CXXFLAGS += [" -v -H -include cstdlib -include yourmum"]
+          ac_add_options MOZ_BUILD_HOOK=/home/runner/buildhook.py
+          EOF
+          cat << EOF > /home/runner/buildhook.py
+          if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
+              CXXFLAGS += ["-v", "-H", "-include cstdlib"]
           EOF
           
       - name: Run fxc2 build.
