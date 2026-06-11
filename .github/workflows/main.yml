@@ -125,6 +125,9 @@ jobs:
           ac_add_options MOZ_BUILD_HOOK=/home/runner/buildhook.py
           EOF
           cat << EOF > /home/runner/buildhook.py
+          if RELATIVEDIR.startswith("mozglue/baseprofiler/"):
+              CXXFLAGS += ["-v", "-H", "-include type_traits"]
+
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
               CXXFLAGS += ["-v", "-H", "-include cstdlib"]
           EOF
