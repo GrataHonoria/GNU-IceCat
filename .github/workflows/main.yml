@@ -126,10 +126,10 @@ jobs:
           EOF
           cat << EOF > /home/runner/buildhook.py
           if RELATIVEDIR.startswith("mozglue/baseprofiler"):
-              CXXFLAGS += ["-v", "-H", "-include type_traits",]
+              CXXFLAGS += ["-v", "-H", "-include", "type_traits",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
-              CXXFLAGS += ["-v", "-H", "-include cstdlib",]
+              CXXFLAGS += ["-v", "-H", "-include", "cstdlib",]
           EOF
           
       - name: Run fxc2 build.
