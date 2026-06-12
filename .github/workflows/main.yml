@@ -134,6 +134,7 @@ jobs:
               
           msextcppflag = (
               "toolkit/xre/dllservices/mozglue",
+              "mozglue/misc",
               "browser/app/winlauncher/freestanding",
           )
               
