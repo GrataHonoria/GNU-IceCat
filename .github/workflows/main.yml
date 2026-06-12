@@ -130,7 +130,7 @@ jobs:
               "ipc/mscom",
           )
           if RELATIVEDIR.startswith(ttcppflag):
-              CXXFLAGS += ["-v", "-H", "-include", "type_traits",]
+              CXXFLAGS += ["-v", "-H", "-include", "cstdlib",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
               CXXFLAGS += ["-v", "-H", "-include", "cstdlib",]
