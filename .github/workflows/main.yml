@@ -132,7 +132,12 @@ jobs:
           if RELATIVEDIR.startswith(ttcppflag):
               CXXFLAGS += ["-v", "-H", "-include", "type_traits",]
               
-          if RELATIVEDIR.startswith("toolkit/xre/dllservices/mozglue"):
+          msextcppflag = (
+              "toolkit/xre/dllservices/mozglue",
+              "browser/app/winlauncher/freestanding",
+          )
+              
+          if RELATIVEDIR.startswith(msextcppflag):
               CXXFLAGS += ["-fms-extensions",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding"):
