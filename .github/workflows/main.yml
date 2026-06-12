@@ -127,10 +127,10 @@ jobs:
           cat << EOF > /home/runner/buildhook.py
           ttcppflag = (
               "mozglue/baseprofiler",
-              "ipc/mscom",
+              "mozglue/misc",
           )
           if RELATIVEDIR.startswith(ttcppflag):
-              CXXFLAGS += ["-v", "-H", "-include", "cstdlib",]
+              CXXFLAGS += ["-v", "-H", "-include", "type_traits",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
               CXXFLAGS += ["-v", "-H", "-include", "cstdlib",]
