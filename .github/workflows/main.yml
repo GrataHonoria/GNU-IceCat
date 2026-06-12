@@ -112,7 +112,6 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
-          #sed -i 's/-Wno-ignored-qualifiers/-Wno-ignored-qualifiers -include=type_traits/' mozglue/baseprofiler/moz.build
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           #export CXXFLAGS="$CXXFLAGS -v -H -fms-extensions -include type_traits -include cstdlib"
@@ -128,6 +127,7 @@ jobs:
           ttcppflag = (
               "mozglue/baseprofiler",
               "mozglue/misc",
+              "toolkit/xre/dllservices/mozglue",
           )
           if RELATIVEDIR.startswith(ttcppflag):
               CXXFLAGS += ["-v", "-H", "-include", "type_traits",]
