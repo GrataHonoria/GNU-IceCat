@@ -125,7 +125,11 @@ jobs:
           ac_add_options MOZ_BUILD_HOOK=/home/runner/buildhook.py
           EOF
           cat << EOF > /home/runner/buildhook.py
-          if RELATIVEDIR.startswith("mozglue/baseprofiler"):
+          ttcppflag = (
+              "mozglue/baseprofiler",
+              "ipc/mscom",
+          )
+          if RELATIVEDIR.startswith(ttcppflag):
               CXXFLAGS += ["-v", "-H", "-include", "type_traits",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding/"):
