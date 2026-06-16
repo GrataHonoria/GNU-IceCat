@@ -142,7 +142,7 @@ jobs:
               CXXFLAGS += ["-fms-extensions",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding"):
-              CXXFLAGS += ["-v", "-H",]
+              CXXFLAGS += ["-v", "-H","-nobuiltininc", "-nostdinc++",]
           EOF
           
       - name: Run fxc2 build.
