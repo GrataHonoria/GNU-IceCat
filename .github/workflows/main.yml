@@ -144,7 +144,7 @@ jobs:
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding"):
               CXXFLAGS += ["-v", "-H", "-nostdinc++", "-I", 
                   "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++",
-                  "-I", "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32/bits",
+                  "-I", "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32",
               ]
           EOF
           
