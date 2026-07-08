@@ -135,19 +135,13 @@ jobs:
           msextcppflag = (
               "toolkit/xre/dllservices/mozglue",
               "mozglue/misc",
-              "browser/app/winlauncher/freestanding",
           )
               
           if RELATIVEDIR.startswith(msextcppflag):
               CXXFLAGS += ["-fms-extensions",]
 
           if RELATIVEDIR.startswith("browser/app/winlauncher/freestanding"):
-              CXXFLAGS += ["-v", "-H", "-nostdinc++", "-nostdinc", "-I", 
-                  "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++",
-                  "-I", "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32",
-                  "-include", "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/cstdint",
-                  "-I", "/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/tr1",
-              ]
+              CXXFLAGS += ["-v", "-H",]
           EOF
           
       - name: Run fxc2 build.
