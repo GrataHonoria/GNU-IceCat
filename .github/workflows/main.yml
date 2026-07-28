@@ -21,7 +21,7 @@ jobs:
           --depth 1 https://git.savannah.gnu.org/git/gnuzilla.git
 
       - name: Upload Gnuzilla
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: Gnuzilla
@@ -112,6 +112,20 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
+          cat ${{ vars.Maybe_diff }} > mfbt/Maybe.diff
+          echo "======================================"
+          cat mfbt/Maybe.diff
+          echo "======================================"
+          
+          patch --verbose < mfbt/Maybe.diff
+          
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          sed -n '1,30p' mfbt/Maybe.h
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          
+          echo "---------------------------------------"
+          sed -n '850,900p' mfbt/Maybe.h
+          echo "---------------------------------------"
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
           #export CXXFLAGS="$CXXFLAGS -v -H -fms-extensions -include type_traits -include cstdlib"
@@ -179,6 +193,7 @@ jobs:
           }}
         with:
           name: IceConfigureLog
+          if-no-files-found: ignore
           path: |
             /home/runner/xorg.log
             /home/runner/.local/share/xorg/Xorg.0.log
