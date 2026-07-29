@@ -103,6 +103,8 @@ jobs:
         
       - name: Prepare Windows build script
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        env:
+          MAYBE_DIFF: "${{ vars.Maybe_diff }}"
         run: |
           tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
@@ -112,7 +114,7 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
-          cat <<< "${{ vars.Maybe_diff }}" > mfbt/Maybe.diff
+          printenv $MAYBE_DIFF > mfbt/Maybe.diff
           echo "======================================"
           cat mfbt/Maybe.diff
           echo "======================================"
