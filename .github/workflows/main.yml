@@ -126,7 +126,7 @@ jobs:
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
           
           echo "---------------------------------------"
-          sed -n '850,900p' mfbt/Maybe.h
+          sed -n '830,870p' mfbt/Maybe.h
           echo "---------------------------------------"
           cat << EOF >> ../../data/buildscripts/mozconfig-windows
           ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
