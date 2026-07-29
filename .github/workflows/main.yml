@@ -119,7 +119,7 @@ jobs:
           cat mfbt/Maybe.diff
           echo "======================================"
           
-          patch --verbose < mfbt/Maybe.diff
+          patch --verbose -p1 < mfbt/Maybe.diff
           
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
           sed -n '1,30p' mfbt/Maybe.h
