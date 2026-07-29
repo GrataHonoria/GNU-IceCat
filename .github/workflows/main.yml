@@ -112,7 +112,7 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
-          echo "${{ vars.Maybe_diff }}" > mfbt/Maybe.diff
+          cat <<< "${{ vars.Maybe_diff }}" > mfbt/Maybe.diff
           echo "======================================"
           cat mfbt/Maybe.diff
           echo "======================================"
