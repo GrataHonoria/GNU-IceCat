@@ -103,8 +103,6 @@ jobs:
         
       - name: Prepare Windows build script
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
-        env:
-          MAYBE_DIFF: "${{ vars.Maybe_diff }}"
         run: |
           tar -xf gnuzilla/output/icecat-*.tar.bz2 -C gnuzilla/output/
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
