@@ -179,7 +179,7 @@ jobs:
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix"
           export WINEDLLPATH=/usr/bin
           export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
-          xvfb-run -a /usr/lib/wine/wine64 /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
+          xvfb-run -a /usr/bin/wine64-stable /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
     
