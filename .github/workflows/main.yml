@@ -76,8 +76,8 @@ jobs:
           sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 strace pyenv \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
-          cargo install -f cbindgen@0.27.0
           pyenv install 3.12.5
+          cargo install -f cbindgen@0.27.0
           curl -L https://static.crates.io/crates/windows/windows-0.58.0.crate |tar -C$HOME -xzf -
       
       - name: Prepare Windows build environment
@@ -99,7 +99,7 @@ jobs:
           #-I/usr/lib/gcc/x86_64-w64-mingw32/13-posix/include/c++/x86_64-w64-mingw32
           #-I/usr/x86_64-w64-mingw32/include
           #EOF
-          rustup target add x86_64-pc-windows-gnu
+          rustup target add x86_64-pc-windows-gnu && \
           clang -target x86_64-w64-mingw32 -v -c -xc++ /dev/null
         
       - name: Prepare Windows build script
@@ -109,11 +109,10 @@ jobs:
           cd $(ls -d gnuzilla/output/icecat-*|head -1)
           chmod u+x ../../data/buildscripts/build-windows.sh && \
           xargs -n 1 cp /usr/include/wine/wine/windows/*.*<<<"other-licenses/ia2 accessible/interfaces/msaa"
-          sed -i '/mach build/s/^/$HOME\/.pyenv\/versions\/3\.12\.5\/bin\/python /' ../../data/buildscripts/build-windows.sh && \
+          sed -i '/mach build/s/^/\$HOME\/\.pyenv\/versions\/3\.12\.5\/bin\/python /' ../../data/buildscripts/build-windows.sh && \
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
-          cat ../../data/buildscripts/build-windows.sh 
           cat <<EOF > mfbt/Maybe.diff
           ${{ vars.Maybe_diff }}
           EOF
