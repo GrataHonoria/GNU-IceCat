@@ -73,11 +73,12 @@ jobs:
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
           sudo dpkg --add-architecture i386 && sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt-get update && \
-          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 strace python3.12 \
+          sudo apt-get -y install mingw-w64-tools llvm wine-binfmt lld-18 strace \
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
-          cargo install -f cbindgen@0.27.0 cargo-download
-          cargo download -x windows=0.58.0 -o$HOME/win-0.58.0
+          sudo apt-get -y install python3.12
+          cargo install -f cbindgen@0.27.0
+          curl -L https://static.crates.io/crates/windows/windows-0.58.0.crate |tar -C$HOME -xzf -
       
       - name: Prepare Windows build environment
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
@@ -178,7 +179,7 @@ jobs:
           export MOZ_CONFIGURE_TRACE=true && \
           export LDFLAGS="-L/usr/x86_64-w64-mingw32/lib -L/usr/lib/gcc/x86_64-w64-mingw32/13-posix"
           export WINEDLLPATH=/usr/bin
-          export MOZ_WINDOWS_RS_DIR=$HOME/win-0.58.0
+          export MOZ_WINDOWS_RS_DIR=$HOME/windows-0.58.0
           xvfb-run -a /usr/bin/wine64-stable /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
