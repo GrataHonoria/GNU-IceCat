@@ -77,7 +77,7 @@ jobs:
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
           pyenv install 3.12.5
-          cargo --config 'patch.crates-io.glslopt.git="https://github.com/jamienicol/glslopt-rs.git"' install -f cbindgen@0.27.0 
+          cargo install -f cbindgen@0.27.0 
           curl -L https://static.crates.io/crates/windows/windows-0.58.0.crate |tar -C$HOME -xzf -
       
       - name: Prepare Windows build environment
@@ -113,6 +113,8 @@ jobs:
           sed -i -e 's/^apt-get/sudo apt-get/' -e '/^sudo apt-get/s/--force-yes  //' ../../data/buildscripts/build-windows.sh && \
           sed -i 's/i686-w64-mingw32/x86_64-w64-mingw32/' ../../data/buildscripts/mozconfig-windows
           sed -i '22d;25d;26d' browser/branding/branding-common.mozbuild
+          echo 'glslopt = { git = "https://github.com/jamienicol/glslopt-rs.git" }' >> Cargo.toml
+          tail -2 Cargo.toml
           cat <<EOF > mfbt/Maybe.diff
           ${{ vars.Maybe_diff }}
           EOF
