@@ -77,7 +77,7 @@ jobs:
           mingw-w64-x86-64-dev g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
           libgcc-12-dev-amd64-cross nasm libwine libwine-dev wine64 wine32:i386 xserver-xorg-video-dummy && \
           pyenv install 3.12.5
-          cargo install -f cbindgen@0.29.4
+          cargo --config 'patch.crates-io.glslopt.git="https://github.com/jamienicol/glslopt-rs.git"' install -f cbindgen@0.27.0 
           curl -L https://static.crates.io/crates/windows/windows-0.58.0.crate |tar -C$HOME -xzf -
       
       - name: Prepare Windows build environment
