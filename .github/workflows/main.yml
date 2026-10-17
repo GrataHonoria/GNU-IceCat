@@ -106,11 +106,11 @@ jobs:
           curl -L https://static.crates.io/crates/glslopt/glslopt-0.1.14.crate |tar -C$HOME -xzf -
           curl -L https://static.crates.io/crates/windows/windows-0.58.0.crate |tar -C$HOME -xzf -
           curl -LO https://filebin.net/lhjnqbrsxcsbwnh7/Microsoft.WindowsAppRuntime.2.msix
-          mkdir winappsdk && unzip Microsoft.WindowsAppRuntime.2.msix -d winappsdk
+          mkdir $HOME/winappsdk && unzip Microsoft.WindowsAppRuntime.2.msix -d $HOME/winappsdk
      
       - name: Upload Windows App SDK
         uses: actions/upload-artifact@v7
-        if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
+        if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
           name: winappsdk
           path: Microsoft.WindowsAppRuntime.2.msix
