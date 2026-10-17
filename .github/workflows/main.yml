@@ -39,7 +39,6 @@ jobs:
         uses: actions/upload-artifact@v7
         if: ${{ (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         with:
-          name: winappsdk
           path: Microsoft.WindowsAppRuntime.2.msix
           archive: false
 
@@ -89,14 +88,13 @@ jobs:
         uses: dawidd6/action-download-artifact@v19
         with:
           workflow_conclusion: ""
-          name: winappsdk
+          name: Microsoft.WindowsAppRuntime.2.msix
           path: /home/runner/winappsdk
           search_artifacts: true
           check_artifacts: true
           skip_unpack: false
           use_unzip: true
       
-          
       - name: Update Windows build environment
         if: ${{ (github.event_name == 'push') || (github.event.inputs.job == github.job) || (github.event.inputs.job == 'all') }}
         run: |
