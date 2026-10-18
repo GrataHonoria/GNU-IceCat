@@ -230,6 +230,7 @@ jobs:
           export WINEDLLPATH=/usr/bin
           export MOZ_WINDOWS_RS_DIR=$HOME/windows-0.62.2
           export MOZ_WINDOWS_APP_SDK_DIR=$HOME/winappsdk
+          export RUSTFLAGS="-C control-flow-guard=no"
           xvfb-run -a /usr/bin/wine64-stable /usr/bin/fxc2.exe -nologo -Tvs_4_0_level_9_3 \
           gfx/layers/d3d11/CompositorD3D11.hlsl -ELayerQuadVS -VnLayerQuadVS -Vi -DVERTEX_SHADER -Fhtmpor9klci_ &&
           ../../data/buildscripts/build-windows.sh
